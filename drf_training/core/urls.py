@@ -29,6 +29,9 @@ def api_root(request, format=None):
             "books-cbv-apivew": reverse(
                 "book-list-cbv-apiviews", request=request, format=format
             ),
+            "authors-cbv-apivew": reverse(
+                "author-list-cbv-apiviews", request=request, format=format
+            ),
             "books-generic-cbv": reverse(
                 "book-list-generic-cbv", request=request, format=format
             ),
@@ -83,6 +86,16 @@ urlpatterns = [
         "cbv-apiview/books/<int:pk>/",
         cbv_APIView.BookDetailCBV.as_view(),
         name="book-detail-cbv-apiviews",
+    ),
+    path(
+        "cbv-apiview/authors/",
+        cbv_APIView.AuthorListCBV.as_view(),
+        name="author-list-cbv-apiviews",
+    ),
+    path(
+        "cbv-apiview/authors/<int:pk>",
+        cbv_APIView.AuthorDetailCBV.as_view(),
+        name="author-detail-cbv-apiviews",
     ),
     # Generic class-based views
     path(
