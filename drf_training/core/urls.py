@@ -32,6 +32,9 @@ def api_root(request, format=None):
             "books-generic-cbv": reverse(
                 "book-list-generic-cbv", request=request, format=format
             ),
+            "authors-generic-cbv": reverse(
+                "author-list-generic-cbv", request=request, format=format
+            ),
             "books-concrete-generic-cbv": reverse(
                 "book-list-concrete-generic-cbv", request=request, format=format
             ),
@@ -91,6 +94,16 @@ urlpatterns = [
         "generic-cbv/books/<int:pk>/",
         cbv_generic_views.GenericsBookDetail.as_view(),
         name="book-detail-generic-cbv",
+    ),
+    path(
+        "generic-cbv/authors/",
+        cbv_generic_views.GenericAuthorList.as_view(),
+        name="author-list-generic-cbv",
+    ),
+    path(
+        "generic-cbv/authors/<int:pk>/",
+        cbv_generic_views.GenericAuthorDetail.as_view(),
+        name="author-detail-generic-cbv",
     ),
     # Mixins with generic class-based views
     path(
