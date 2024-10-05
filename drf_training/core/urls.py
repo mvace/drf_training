@@ -41,6 +41,9 @@ def api_root(request, format=None):
             "books-mixin-cbv": reverse(
                 "book-list-mixin-cbv", request=request, format=format
             ),
+            "authors-mixin-cbv": reverse(
+                "author-list-mixin-cbv", request=request, format=format
+            ),
             "books-viewset": reverse("book-list", request=request, format=format),
             "authors-viewset": reverse("author-list", request=request, format=format),
             "books-model-viewset": reverse(
@@ -63,7 +66,7 @@ urlpatterns = [
         name="book-list-fbv",
     ),
     path(
-        "fbv/books/<int:pk>",
+        "fbv/books/<int:pk>/",
         function_based_views.book_detail_function_based_view,
         name="book-detail-fbv",
     ),
@@ -74,7 +77,7 @@ urlpatterns = [
         name="book-list-cbv-apiviews",
     ),
     path(
-        "cbv-apiview/books/<int:pk>",
+        "cbv-apiview/books/<int:pk>/",
         cbv_APIView.BookDetailCBV.as_view(),
         name="book-detail-cbv-apiviews",
     ),
@@ -85,7 +88,7 @@ urlpatterns = [
         name="book-list-generic-cbv",
     ),
     path(
-        "generic-cbv/books/<int:pk>",
+        "generic-cbv/books/<int:pk>/",
         cbv_generic_views.GenericsBookDetail.as_view(),
         name="book-detail-generic-cbv",
     ),
@@ -96,9 +99,19 @@ urlpatterns = [
         name="book-list-mixin-cbv",
     ),
     path(
-        "mixin-cbv/books/<int:pk>",
+        "mixin-cbv/books/<int:pk>/",
         cbv_mixins.MixinBookDetail.as_view(),
         name="book-detail-mixin-cbv",
+    ),
+    path(
+        "mixin-cbv/author/",
+        cbv_mixins.MixinAuthorList.as_view(),
+        name="author-list-mixin-cbv",
+    ),
+    path(
+        "mixin-cbv/author/<int:pk>/",
+        cbv_mixins.MixinAuthorDetail.as_view(),
+        name="author-detail-mixin-cbv",
     ),
     # Concrete generic class-based views
     path(
@@ -107,7 +120,7 @@ urlpatterns = [
         name="book-list-concrete-generic-cbv",
     ),
     path(
-        "concrete-generic-cbv/books/<int:pk>",
+        "concrete-generic-cbv/books/<int:pk>/",
         cbv_concrete_generic_views.GenericsBookDetail.as_view(),
         name="book-detail-concrete-generic-cbv",
     ),
@@ -117,7 +130,7 @@ urlpatterns = [
         name="author-list-concrete-generic-cbv",
     ),
     path(
-        "concrete-generic-cbv/authors/<int:pk>",
+        "concrete-generic-cbv/authors/<int:pk>/",
         cbv_concrete_generic_views.GenericsAuthorDetail.as_view(),
         name="author-detail-concrete-generic-cbv",
     ),
