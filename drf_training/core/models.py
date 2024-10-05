@@ -6,6 +6,9 @@ from datetime import datetime
 class Author(models.Model):
     name = models.CharField(max_length=128)
     birth_date = models.DateField(default=datetime(1970, 1, 1))
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="author", default=1
+    )
 
     def __str__(self):
         return self.name

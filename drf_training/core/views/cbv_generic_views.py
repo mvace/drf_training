@@ -1,36 +1,40 @@
-from rest_framework.views import APIView
-from ..models import User, Book, Author
+from rest_framework import generics, permissions, status
 from ..serializers import BookSerializer
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from ..models import Book
 from ..permissions import IsOwnerOrStaffOrReadOnly
+from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 
-class BookListCBV(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+class GenericsBookList(generics.GenericAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
-        books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)
+        books = self.get_queryset()
+        serializer = self.get_serializer(books, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = BookSerializer(data=request.data, context={"request": request})
+        serializer = self.get_serializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BookDetailCBV(APIView):
+class GenericsBookDetail(generics.GenericAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
     permission_classes = [IsOwnerOrStaffOrReadOnly]
 
     def get_object(self, pk):
-        return get_object_or_404(Book, id=pk)
+        return get_object_or_404(Book, pk=pk)
 
-    def get(self, request, pk, format=None):
+    def get(self, request, pk):
         book = self.get_object(pk=pk)
         serializer = BookSerializer(book)
         return Response(serializer.data)

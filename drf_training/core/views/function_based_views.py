@@ -1,12 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework.reverse import reverse
-from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from ..models import User, Book, Author
 from ..serializers import BookSerializer
 from rest_framework import status
 from ..permissions import IsOwnerOrStaffOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 
 
 @api_view(["GET", "POST"])
@@ -45,15 +44,3 @@ def book_detail_function_based_view(request, pk):
     elif request.method == "DELETE":
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(["GET"])
-def api_root(request, format=None):
-    return Response(
-        {
-            "books-fbv": reverse("book-list-fbv", request=request, format=format),
-            "books-cbv-apivew": reverse(
-                "book-list-cbv-apiviews", request=request, format=format
-            ),
-        }
-    )
