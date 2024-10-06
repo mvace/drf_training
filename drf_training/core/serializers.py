@@ -11,7 +11,6 @@ class BookSerializer(serializers.Serializer):
     owner = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def create(self, validated_data):
-        print(self.context)
         validated_data["owner"] = self.context["request"].user
         return Book.objects.create(**validated_data)
 
