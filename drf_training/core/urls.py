@@ -26,6 +26,7 @@ def api_root(request, format=None):
     return Response(
         {
             "books-fbv": reverse("book-list-fbv", request=request, format=format),
+            "authors-fbv": reverse("author-list-fbv", request=request, format=format),
             "books-cbv-apivew": reverse(
                 "book-list-cbv-apiviews", request=request, format=format
             ),
@@ -75,6 +76,16 @@ urlpatterns = [
         "fbv/books/<int:pk>/",
         function_based_views.book_detail_function_based_view,
         name="book-detail-fbv",
+    ),
+    path(
+        "fbv/authors/",
+        function_based_views.author_list_function_based_view,
+        name="author-list-fbv",
+    ),
+    path(
+        "fbv/authors/<int:pk>",
+        function_based_views.author_detail_function_based_view,
+        name="author-detail-fbv",
     ),
     # Class Based Views using APIView:
     path(

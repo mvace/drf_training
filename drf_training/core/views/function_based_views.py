@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from ..models import User, Book, Author
-from ..serializers import BookSerializer
+from ..serializers import BookSerializer, AuthorSerializer
 from rest_framework import status
 from ..permissions import IsOwnerOrStaffOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -43,4 +43,41 @@ def book_detail_function_based_view(request, pk):
 
     elif request.method == "DELETE":
         book.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def author_list_function_based_view(request):
+    if request.method == "GET":
+        authors = Author.objects.all()
+        serializer = AuthorSerializer(authors, many=True)
+        return Response(serializer.data)
+
+    if request.method == "POST":
+        serializer = AuthorSerializer(data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "PUT", "DELETE"])
+@permission_classes([IsOwnerOrStaffOrReadOnly])
+def author_detail_function_based_view(request, pk):
+    author = get_object_or_404(Author, pk=pk)
+
+    if request.method == "GET":
+        serializer = AuthorSerializer(author)
+        return Response(serializer.data)
+
+    if request.method == "PUT":
+        serializer = AuthorSerializer(author, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == "DELETE":
+        author.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
