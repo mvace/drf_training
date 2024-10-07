@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from ..models import User, Book, Author
-from ..serializers import BookSerializer, AuthorSerializer
+from ..serializers import BookSerializer, AuthorSerializer, ModelBookSerializer
 from rest_framework import status
 from ..permissions import IsOwnerOrStaffOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -13,11 +13,13 @@ from rest_framework.response import Response
 def book_list_function_based_view(request):
     if request.method == "GET":
         books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)
+        serializer = ModelBookSerializer(books, many=True)
         return Response(serializer.data)
 
     elif request.method == "POST":
-        serializer = BookSerializer(data=request.data, context={"request": request})
+        serializer = ModelBookSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -30,11 +32,11 @@ def book_detail_function_based_view(request, pk):
     book = get_object_or_404(Book, id=pk)
 
     if request.method == "GET":
-        serializer = BookSerializer(book)
+        serializer = ModelBookSerializer(book)
         return Response(serializer.data)
 
     elif request.method == "PUT":
-        serializer = BookSerializer(book, data=request.data)
+        serializer = ModelBookSerializer(book, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

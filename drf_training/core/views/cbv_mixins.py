@@ -1,5 +1,9 @@
 from rest_framework import generics, permissions, mixins
-from ..serializers import BookSerializer, AuthorSerializer
+from ..serializers import (
+    BookSerializer,
+    AuthorSerializer,
+    ModelBookSerializer,
+)
 from ..models import Book, Author
 from ..permissions import IsOwnerOrStaffOrReadOnly
 
@@ -8,7 +12,7 @@ class MixinBookList(
     generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
 ):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = ModelBookSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
@@ -25,7 +29,7 @@ class MixinBookDetail(
     mixins.DestroyModelMixin,
 ):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = ModelBookSerializer
     permission_classes = [IsOwnerOrStaffOrReadOnly]
 
     def get(self, request, *args, **kwargs):

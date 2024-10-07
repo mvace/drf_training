@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from ..serializers import BookSerializer, AuthorSerializer
+from ..serializers import BookSerializer, AuthorSerializer, ModelBookSerializer
 from ..models import Book, Author
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -16,11 +16,13 @@ class BookViewSet(ViewSet):
 
     def list(self, request):
         queryset = Book.objects.all()
-        serializer = BookSerializer(queryset, many=True)
+        serializer = ModelBookSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = BookSerializer(data=request.data, context={"request": request})
+        serializer = ModelBookSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -28,12 +30,12 @@ class BookViewSet(ViewSet):
 
     def retrieve(self, request, pk=None):
         book = self.get_object(pk=pk)
-        serializer = BookSerializer(book)
+        serializer = ModelBookSerializer(book)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
         book = self.get_object(pk=pk)
-        serializer = BookSerializer(book, data=request.data)
+        serializer = ModelBookSerializer(book, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

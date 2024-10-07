@@ -41,7 +41,6 @@ class BaseAPITestCase(TestCase):
             "title": "New Book",
             "published_date": "2021-01-01",
             "author": self.author.id,
-            "owner": self.user.id,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -60,7 +59,6 @@ class BaseAPITestCase(TestCase):
             "title": "Updated Book Title",
             "published_date": "2022-01-01",
             "author": self.author.id,
-            "owner": self.user.id,
         }
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

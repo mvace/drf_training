@@ -2,13 +2,25 @@ from rest_framework import serializers
 from .models import Author, Book, User
 
 
+class ModelBookSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.name", read_only=True)
+
+    class Meta:
+        model = Book
+        fields = ["id", "title", "published_date", "author", "author_name"]
+        read_only_fields = ["id"]
+
+    def create(self, validated_data):
+        validated_data["owner"] = self.context["request"].user
+        return Book.objects.create(**validated_data)
+
+
 class BookSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=128)
     published_date = serializers.DateField()
     author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
     author_name = serializers.CharField(source="author.name", read_only=True)
-    owner = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def create(self, validated_data):
         validated_data["owner"] = self.context["request"].user
