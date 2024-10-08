@@ -3,6 +3,7 @@ from ..serializers import (
     BookSerializer,
     AuthorSerializer,
     ModelBookSerializer,
+    ModelAuthorSerializer,
 )
 from ..models import Book, Author
 from ..permissions import IsOwnerOrStaffOrReadOnly
@@ -49,7 +50,7 @@ class MixinAuthorList(
     generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
 ):
     queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    serializer_class = ModelAuthorSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
@@ -66,7 +67,7 @@ class MixinAuthorDetail(
     mixins.DestroyModelMixin,
 ):
     queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    serializer_class = ModelAuthorSerializer
     permission_classes = [IsOwnerOrStaffOrReadOnly]
 
     def get(self, request, *args, **kwargs):

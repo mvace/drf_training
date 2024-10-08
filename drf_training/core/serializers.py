@@ -2,6 +2,17 @@ from rest_framework import serializers
 from .models import Author, Book, User
 
 
+class ModelAuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ["id", "name", "birth_date"]
+        read_only_fields = ["id"]
+
+    def create(self, validated_data):
+        validated_data["owner"] = self.context["request"].user
+        return Author.objects.create(**validated_data)
+
+
 class ModelBookSerializer(serializers.ModelSerializer):
     author_name = serializers.CharField(source="author.name", read_only=True)
 

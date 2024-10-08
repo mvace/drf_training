@@ -1,7 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from ..models import User, Book, Author
-from ..serializers import BookSerializer, AuthorSerializer, ModelBookSerializer
+from ..serializers import (
+    BookSerializer,
+    AuthorSerializer,
+    ModelBookSerializer,
+    ModelAuthorSerializer,
+)
 from rest_framework import status
 from ..permissions import IsOwnerOrStaffOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -52,11 +57,13 @@ def book_detail_function_based_view(request, pk):
 def author_list_function_based_view(request):
     if request.method == "GET":
         authors = Author.objects.all()
-        serializer = AuthorSerializer(authors, many=True)
+        serializer = ModelAuthorSerializer(authors, many=True)
         return Response(serializer.data)
 
     if request.method == "POST":
-        serializer = AuthorSerializer(data=request.data, context={"request": request})
+        serializer = ModelAuthorSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -69,11 +76,11 @@ def author_detail_function_based_view(request, pk):
     author = get_object_or_404(Author, pk=pk)
 
     if request.method == "GET":
-        serializer = AuthorSerializer(author)
+        serializer = ModelAuthorSerializer(author)
         return Response(serializer.data)
 
     if request.method == "PUT":
-        serializer = AuthorSerializer(author, request.data)
+        serializer = ModelAuthorSerializer(author, request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

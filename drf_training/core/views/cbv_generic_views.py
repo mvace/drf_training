@@ -1,5 +1,10 @@
 from rest_framework import generics, permissions, status
-from ..serializers import BookSerializer, AuthorSerializer, ModelBookSerializer
+from ..serializers import (
+    BookSerializer,
+    AuthorSerializer,
+    ModelBookSerializer,
+    ModelAuthorSerializer,
+)
 from ..models import Book, Author
 from ..permissions import IsOwnerOrStaffOrReadOnly
 from rest_framework.response import Response
@@ -55,12 +60,12 @@ class GenericsBookDetail(generics.GenericAPIView):
 
 class GenericAuthorList(generics.GenericAPIView):
     queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    serializer_class = ModelAuthorSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
         authors = self.get_queryset()
-        serializer = AuthorSerializer(authors, many=True)
+        serializer = ModelAuthorSerializer(authors, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -75,7 +80,7 @@ class GenericAuthorList(generics.GenericAPIView):
 
 class GenericAuthorDetail(generics.GenericAPIView):
     queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    serializer_class = ModelAuthorSerializer
     permission_classes = [IsOwnerOrStaffOrReadOnly]
 
     def get_object(self, pk):
@@ -83,12 +88,12 @@ class GenericAuthorDetail(generics.GenericAPIView):
 
     def get(self, request, pk):
         author = self.get_object(pk=pk)
-        serializer = AuthorSerializer(author)
+        serializer = ModelAuthorSerializer(author)
         return Response(serializer.data)
 
     def put(self, request, pk):
         author = self.get_object(pk=pk)
-        serializer = AuthorSerializer(author, data=request.data)
+        serializer = ModelAuthorSerializer(author, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -1,6 +1,11 @@
 from rest_framework.views import APIView
 from ..models import User, Book, Author
-from ..serializers import BookSerializer, AuthorSerializer, ModelBookSerializer
+from ..serializers import (
+    BookSerializer,
+    AuthorSerializer,
+    ModelBookSerializer,
+    ModelAuthorSerializer,
+)
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -56,11 +61,13 @@ class AuthorListCBV(APIView):
 
     def get(self, request, format=None):
         authors = Author.objects.all()
-        serializer = AuthorSerializer(authors, many=True)
+        serializer = ModelAuthorSerializer(authors, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = AuthorSerializer(data=request.data, context={"request": request})
+        serializer = ModelAuthorSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -76,12 +83,12 @@ class AuthorDetailCBV(APIView):
 
     def get(self, request, pk, format=None):
         author = self.get_object(pk=pk)
-        serializer = AuthorSerializer(author)
+        serializer = ModelAuthorSerializer(author)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
         author = self.get_object(pk=pk)
-        serializer = AuthorSerializer(author, data=request.data)
+        serializer = ModelAuthorSerializer(author, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

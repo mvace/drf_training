@@ -1,7 +1,12 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from ..serializers import BookSerializer, AuthorSerializer, ModelBookSerializer
+from ..serializers import (
+    BookSerializer,
+    AuthorSerializer,
+    ModelBookSerializer,
+    ModelAuthorSerializer,
+)
 from ..models import Book, Author
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -55,11 +60,13 @@ class AuthorViewSet(ViewSet):
 
     def list(self, request):
         queryset = Author.objects.all()
-        serializer = AuthorSerializer(queryset, many=True)
+        serializer = ModelAuthorSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = AuthorSerializer(data=request.data, context={"request": request})
+        serializer = ModelAuthorSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -67,12 +74,12 @@ class AuthorViewSet(ViewSet):
 
     def retrieve(self, request, pk=None):
         author = self.get_object(pk=pk)
-        serializer = AuthorSerializer(author)
+        serializer = ModelAuthorSerializer(author)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
         author = self.get_object(pk=pk)
-        serializer = AuthorSerializer(author, data=request.data)
+        serializer = ModelAuthorSerializer(author, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
