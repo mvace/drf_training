@@ -1,7 +1,7 @@
-from .base import BaseAPITestCase
+from .base import BaseAPITestCaseBook, BaseAPITestCaseAuthor
 
 
-class BookViewsetViewTestCase(BaseAPITestCase):
+class BookViewsetViewTestCase(BaseAPITestCaseBook):
 
     def listURL(self):
         print("Running: book-list")
@@ -25,3 +25,29 @@ class BookViewsetViewTestCase(BaseAPITestCase):
 
     def test_delete_book(self):
         self._delete_book()
+
+
+class AuthorViewsetViewTestCase(BaseAPITestCaseAuthor):
+
+    def listURL(self):
+        print("Running: author-list")
+        return "author-list"
+
+    def detailURL(self):
+        print("Running: author-detail")
+        return "author-detail"
+
+    def test_list_authors(self):
+        self._list_authors()
+
+    def test_create_author(self):
+        self._create_author()
+
+    def test_retrieve_author(self):
+        self._retrieve_author()
+
+    def test_update_author(self):
+        self._update_author()
+
+    def test_delete_author(self):
+        self._delete_author()
