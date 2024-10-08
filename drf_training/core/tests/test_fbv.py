@@ -4,11 +4,9 @@ from .base import BaseAPITestCaseBook, BaseAPITestCaseAuthor
 class BookFBVAPITestCase(BaseAPITestCaseBook):
 
     def listURL(self):
-        print("Running: book-list-fbv")
         return "book-list-fbv"
 
     def detailURL(self):
-        print("Running: book-detail-fbv")
         return "book-detail-fbv"
 
     def test_list_books(self):
@@ -30,11 +28,9 @@ class BookFBVAPITestCase(BaseAPITestCaseBook):
 class AuthorFBVAPITestCase(BaseAPITestCaseAuthor):
 
     def listURL(self):
-        print("Running: author-list-fbv")
         return "author-list-fbv"
 
     def detailURL(self):
-        print("Running: author-detail-fbv")
         return "author-detail-fbv"
 
     def test_list_authors(self):

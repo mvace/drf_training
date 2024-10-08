@@ -7,6 +7,7 @@ from .views import (
     cbv_mixins,
     viewsets,
     model_viewsets,
+    model_viewset_action,
 )
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -15,10 +16,17 @@ from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
 router2 = SimpleRouter()
+router3 = SimpleRouter()
 router.register(r"books", viewsets.BookViewSet, basename="book")
 router.register(r"author", viewsets.AuthorViewSet, basename="author")
 router2.register(r"books", model_viewsets.BookModelViewSet, basename="modelbook")
 router2.register(r"author", model_viewsets.AuthorModelViewset, basename="modelauthor")
+router3.register(
+    r"books", model_viewset_action.BookModelViewSetAction, basename="actionbook"
+)
+router3.register(
+    r"author", model_viewset_action.AuthorModelViewSetAction, basename="actionauthor"
+)
 
 
 @api_view(["GET"])
@@ -58,6 +66,12 @@ def api_root(request, format=None):
             ),
             "author-model-viewset": reverse(
                 "modelauthor-list", request=request, format=format
+            ),
+            "book-action-viewset": reverse(
+                "actionbook-list", request=request, format=format
+            ),
+            "author-action-viewset": reverse(
+                "actionauthor-list", request=request, format=format
             ),
         }
     )
@@ -176,4 +190,5 @@ urlpatterns = [
     # ModelViewSets
     path("model_viewset/", include(router2.urls)),
     # Custom ViewSets with custom actions
+    path("action_viewset/", include(router3.urls)),
 ]

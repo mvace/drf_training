@@ -1,13 +1,13 @@
 from .base import BaseAPITestCaseBook, BaseAPITestCaseAuthor
 
 
-class BookCBVconcreteGenericViewTestCase(BaseAPITestCaseBook):
+class BookActionModelViewsetViewTestCase(BaseAPITestCaseBook):
 
     def listURL(self):
-        return "book-list-concrete-generic-cbv"
+        return "modelbook-list"
 
     def detailURL(self):
-        return "book-detail-concrete-generic-cbv"
+        return "modelbook-detail"
 
     def test_list_books(self):
         self._list_books()
@@ -25,13 +25,13 @@ class BookCBVconcreteGenericViewTestCase(BaseAPITestCaseBook):
         self._delete_book()
 
 
-class AuthorCBVconcreteGenericViewTestCase(BaseAPITestCaseAuthor):
+class AuthorActionModelViewsetViewTestCase(BaseAPITestCaseAuthor):
 
     def listURL(self):
-        return "author-list-concrete-generic-cbv"
+        return "actionauthor-list"
 
     def detailURL(self):
-        return "author-detail-concrete-generic-cbv"
+        return "actionauthor-detail"
 
     def test_list_authors(self):
         self._list_authors()

@@ -4,11 +4,9 @@ from .base import BaseAPITestCaseBook, BaseAPITestCaseAuthor
 class BookViewsetViewTestCase(BaseAPITestCaseBook):
 
     def listURL(self):
-        print("Running: book-list")
         return "book-list"
 
     def detailURL(self):
-        print("Running: book-detail")
         return "book-detail"
 
     def test_list_books(self):
@@ -30,11 +28,9 @@ class BookViewsetViewTestCase(BaseAPITestCaseBook):
 class AuthorViewsetViewTestCase(BaseAPITestCaseAuthor):
 
     def listURL(self):
-        print("Running: author-list")
         return "author-list"
 
     def detailURL(self):
-        print("Running: author-detail")
         return "author-detail"
 
     def test_list_authors(self):

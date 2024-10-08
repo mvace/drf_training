@@ -4,11 +4,9 @@ from .base import BaseAPITestCaseBook, BaseAPITestCaseAuthor
 class BookMixinViewTestCase(BaseAPITestCaseBook):
 
     def listURL(self):
-        print("Running: book-list-mixin-cbv")
         return "book-list-mixin-cbv"
 
     def detailURL(self):
-        print("Running: book-detail-mixin-cbv")
         return "book-detail-mixin-cbv"
 
     def test_list_books(self):
@@ -30,11 +28,9 @@ class BookMixinViewTestCase(BaseAPITestCaseBook):
 class AuthorMixinViewTestCase(BaseAPITestCaseAuthor):
 
     def listURL(self):
-        print("Running: author-list-mixin-cbv")
         return "author-list-mixin-cbv"
 
     def detailURL(self):
-        print("Running: author-detail-mixin-cbv")
         return "author-detail-mixin-cbv"
 
     def test_list_authors(self):

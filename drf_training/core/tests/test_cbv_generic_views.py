@@ -4,11 +4,9 @@ from .base import BaseAPITestCaseBook, BaseAPITestCaseAuthor
 class BookCBVGenericTestCase(BaseAPITestCaseBook):
 
     def listURL(self):
-        print("Running: book-list-generic-cbv")
         return "book-list-generic-cbv"
 
     def detailURL(self):
-        print("Running: book-detail-generic-cbv")
         return "book-detail-generic-cbv"
 
     def test_list_books(self):
@@ -30,11 +28,9 @@ class BookCBVGenericTestCase(BaseAPITestCaseBook):
 class AuthorCBVGenericTestCase(BaseAPITestCaseAuthor):
 
     def listURL(self):
-        print("Running: author-list-generic-cbv")
         return "author-list-generic-cbv"
 
     def detailURL(self):
-        print("Running: author-detail-generic-cbv")
         return "author-detail-generic-cbv"
 
     def test_list_authors(self):
